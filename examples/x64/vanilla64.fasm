@@ -10,8 +10,10 @@ include "includeobj.inc"
 
 @iobj_dbg_show_all
 includeobj "fasmObj64.obj"
+includeobj "cObj64.obj"
 
 extrn func1
+extrn "c_func" as func2 
 public var1 as "ext1"
 public ext2
 
@@ -19,7 +21,7 @@ var1 dd 10
 ext2 dd 20
 
 proc main
-	call func1
+	ccall func2
 	cinvoke printf, "%d", eax
 	invoke ExitProcess, 0
 endp

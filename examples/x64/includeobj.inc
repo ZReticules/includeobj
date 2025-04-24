@@ -512,7 +512,7 @@ macro %get_name_sec strname, strlen, glob_lab, offset, strings_offset{
 	end if
 }
 
-macro calc@reloc global_file, sections_count, symbols_offset, symbols_count, strings_table, sec_bytes, is_used, last_section{
+macro calc@reloc global_file, sections_count, symbols_offset, symbols_count, strings_table, sec_bytes, is_used, last_section, fname{
 	if used is_used
 		local i
 		i = 0
@@ -530,7 +530,7 @@ macro calc@reloc global_file, sections_count, symbols_offset, symbols_count, str
 			i = i + 1 + nax_smb
 		end while
 		match , IOBJ_DBG\{
-			display "sections", 0Ah
+			display fname, 0Ah, "sections", 0Ah
 		\}
 		local section_offset, offset_name_sec, name_len_sec, data_sec, size_sec, flags_sec, reloc_sec, reloc_count_sec
 		local offset_reloc, smb_index_reloc, type_reloc, real_addr_reloc, value_reloc
@@ -724,7 +724,7 @@ macro includeobj fname{
 	end if
 
 	match , IOBJ_DBG\{
-		display "symbols", 0Ah
+		display fname, 0Ah, "symbols", 0Ah
 	\}
 	local i, nax_smb, class_smb, sec_smb
 	local addr_smb, offset_name_smb, name_len_smb
@@ -808,7 +808,10 @@ macro includeobj fname{
 		i = i + 1 + nax_smb
 	end while
 
-	total@relocs equ ..global_file, sections_count, symbols_offset, symbols_count, strings_table, sec_bytes, is_used, last@section
+	match , IOBJ_DBG\{
+		display 0Ah
+	\}
+	total@relocs equ ..global_file, sections_count, symbols_offset, symbols_count, strings_table, sec_bytes, is_used, last@section, fname
 	obj@externs equ ..externs, is_used
 }
 

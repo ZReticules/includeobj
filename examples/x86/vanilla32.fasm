@@ -15,13 +15,18 @@ section ".code" readable writeable executable
 
 @iobj_dbg_show_all
 includeobj "fasmObj32.obj"
+includeobj "cObj32.obj"
 
 extrn func1
+extrn "_c_func" as func2 
 public var1 as "ext1"
 public ext2
+public var1 as "_ext1"
+public ext2 as "_ext2"
+public func1 as "_func1"
 
 proc main
-	call func1
+	ccall func2
 	cinvoke printf, "%d", eax
 	invoke ExitProcess, 0
 endp
