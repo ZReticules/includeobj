@@ -1,0 +1,39 @@
+FORMAT PE64 CONSOLE
+entry main
+
+section ".code" readable writeable executable
+
+include "win64ax.inc"
+
+define __architecture x64
+include "includeobj.inc"
+
+@iobj_dbg_show_all
+includeobj "fasmObj64.obj"
+
+extrn func1
+public var1 as "ext1"
+public ext2
+
+var1 dd 10
+ext2 dd 20
+
+proc main
+	call func1
+	cinvoke printf, "%d", eax
+	invoke ExitProcess, 0
+endp
+
+data import
+
+	library msvcrt, "msvcrt.dll",\
+		kernel32, "kernel32.dll"
+
+	import msvcrt,\
+		printf, "printf",\
+		puts, "puts"
+
+	import kernel32,\
+		ExitProcess, "ExitProcess"
+
+end data

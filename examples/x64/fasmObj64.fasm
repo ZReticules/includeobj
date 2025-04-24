@@ -1,0 +1,13 @@
+format MS64 COFF
+
+public some_func as "func1"
+extrn "ext1" as ext_var 
+extrn ext2
+
+section ".code" readable writeable executable
+
+some_func:
+	mov rax, [ext_var]
+	add rax, [ext2]
+	add rax, ext2
+	ret

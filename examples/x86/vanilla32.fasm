@@ -1,0 +1,39 @@
+FORMAT PE CONSOLE
+entry main
+
+include "win32ax.inc"
+
+define __architecture x86
+include "includeobj.inc"
+
+section ".data" data readable writeable
+
+var1 dd 30h
+ext2 dd 20
+
+section ".code" readable writeable executable
+
+@iobj_dbg_show_all
+includeobj "fasmObj32.obj"
+
+extrn func1
+public var1 as "ext1"
+public ext2
+
+proc main
+	call func1
+	cinvoke printf, "%d", eax
+	invoke ExitProcess, 0
+endp
+
+section ".idata" import readable writeable
+
+	library msvcrt, "msvcrt.dll",\
+		kernel32, "kernel32.dll"
+
+	import msvcrt,\
+		printf, "printf",\
+		puts, "puts"
+
+	import kernel32,\
+		ExitProcess, "ExitProcess"
