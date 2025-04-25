@@ -301,13 +301,14 @@ virtual at 0
 end virtual
 
 macro public lab_smb{
-	local smb_len, smb_glob, smb_offset, smb_val, _char
+	local smb_len, smb_glob, smb_offset, smb_val, _char, _dest
 	match lab =from virt_lab =size num =offset shift =into dest, lab_smb\{
 		\local i
 		smb_glob equ virt_lab
 		smb_offset = shift
 		smb_len = num
 		smb_val equ (lab)
+		_dest equ dest
 	rept 0\{\} rept 1\{
 		\local _symbols
 		smb_val equ (lab_smb)
@@ -333,6 +334,7 @@ macro public lab_smb{
 	succseded = 0
 	while ~succseded & offset < externals.size & externals.size <> 0
 		load in_size word from externals:offset + EXTRN_LEN
+		; %display_ascii externals, offset + 2 + pointer.size, in_size
 		if in_size = smb_len
 			i = smb_len
 			succseded = 1
@@ -347,6 +349,7 @@ macro public lab_smb{
 			end while
 			if succseded
 				load smb_find_val dword from externals:offset + EXTRN_ADDR
+				_dest = smb_find_val
 				if smb_find_val <> smb_val
 					display "public symbol " 
 					%display_ascii externals, externals.size - smb_len, smb_len
@@ -362,6 +365,7 @@ macro public lab_smb{
 	if ~succseded
 		i = 0
 		virtual externals
+			_dest = $
 			dw smb_len
 			dw 0
 			dptr smb_val
