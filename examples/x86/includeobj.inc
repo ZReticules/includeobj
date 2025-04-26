@@ -821,7 +821,9 @@ macro includeobj fname{
 macro dllpublic name, func{
 	match =name#.defined, name#.defined\{
 		define name#.defined
-		name:
-			jmp func
+		if used name
+			name:
+				jmp func
+		end if
 	\}
 }
