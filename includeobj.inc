@@ -623,7 +623,7 @@ macro calc@reloc global_file, sections_count, symbols_offset, symbols_count, str
 							match , IOBJ_DBG IOBJ_DBG_SHOW_RELOCS\\{
 								display 09h, 09h, "r "
 							\\}
-							store dword (addr_smb - (real_addr_reloc + 4)) and 0FFFFFFFFh + value_reloc at real_addr_reloc
+							store dword (addr_smb - (real_addr_reloc + 4) + value_reloc) and 0FFFFFFFFh at real_addr_reloc
 						else if type_reloc >= IMAGE_REL_AMD64_REL32_1 & type_reloc <= IMAGE_REL_AMD64_REL32_5
 							store (addr_smb and 0FFFFFFFFh) - (real_addr_reloc + 4 + (type_reloc - IMAGE_REL_AMD64_REL32_1)) at last_section:real_addr_reloc
 							match , IOBJ_DBG IOBJ_DBG_SHOW_RELOCS\\{
